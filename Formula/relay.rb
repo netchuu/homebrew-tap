@@ -3,37 +3,37 @@
 class Relay < Formula
   desc "Answer Claude Code prompts from your phone"
   homepage "https://relay.relay-cloud.workers.dev"
-  version "0.8.1"
+  version "0.9.0"
   license :cannot_represent
 
   # Bottles hold the same signed binaries as the tarballs below. Pouring one skips Homebrew's
   # source-build checks, which fail on an Xcode or CLT older than the running macOS.
   bottle do
-    root_url "https://github.com/netchuu/homebrew-tap/releases/download/v0.8.1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "79b1f99ac53d2c3e0a128caaccd356ee7c5b5ae81e0c737e243c50c99c7e8bf7"
-    sha256 cellar: :any_skip_relocation, ventura:       "b8fea28633aa8d537a39985cd4e9e64fb1592269885032a155e1b9cdd9bf1215"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "53630a9e98c48c9b38d67836fa56a3972348967d856efd3acd326499f58d611a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "90ca8827f0024f0e795294147739ec1e09df5e3fc1537cff2b9ea4639d41fa91"
+    root_url "https://github.com/netchuu/homebrew-tap/releases/download/v0.9.0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "739505419d204220dda06efef23eff0d93d6ab29cb3f77ecfa38d923c323e4fa"
+    sha256 cellar: :any_skip_relocation, ventura:       "a31da42446b4eb4e3ae1b75fc96171257359327e27a3b108f390dc7d9f419e41"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "543bd0fb16382402ee318cda53ddc44e7f0c162514932a229f1e44c3e6de8b87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "57ab2757f328af4b971c8ca53378312e8197f528c9144c3dc233805973c1ccf8"
   end
 
   on_macos do
     on_arm do
-      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.8.1/relay-0.8.1-darwin-arm64.tar.gz"
-      sha256 "7c973406d0a15e99686d8a1b8bc062670867f09d16fc31bb9c6deb99159e66b7"
+      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.9.0/relay-0.9.0-darwin-arm64.tar.gz"
+      sha256 "1bf007e5de7e4d79a0927457ea94ecd9ef4d1e78233846a94661093af811816c"
     end
     on_intel do
-      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.8.1/relay-0.8.1-darwin-x64.tar.gz"
-      sha256 "ad6d69e0bf472341d18f4d956b8302dbc219f91f7e55be4558a38f30db7d2a7f"
+      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.9.0/relay-0.9.0-darwin-x64.tar.gz"
+      sha256 "aa9263755c6f29d22b40d4db256536c38911cc1222e2ff0851ae6578f71a794a"
     end
   end
   on_linux do
     on_arm do
-      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.8.1/relay-0.8.1-linux-arm64.tar.gz"
-      sha256 "2a996e0c3bf7f75e486df9a93b85e8c0936e4fb8b3212d498160ed0a2857db3d"
+      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.9.0/relay-0.9.0-linux-arm64.tar.gz"
+      sha256 "6ea32d660fb934cafeb337a57d31b1bcc10bfb19a63aacc463781cdb34fe4c5f"
     end
     on_intel do
-      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.8.1/relay-0.8.1-linux-x64.tar.gz"
-      sha256 "7091d16985448a1e58b0a139f985e2ac786e313be1ae874465631988c87828e4"
+      url "https://github.com/netchuu/homebrew-tap/releases/download/v0.9.0/relay-0.9.0-linux-x64.tar.gz"
+      sha256 "406525bd70371ada453bbe82f89c94444bc596de39eb6f3daf1cabac602229ee"
     end
   end
 
