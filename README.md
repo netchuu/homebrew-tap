@@ -9,17 +9,7 @@ You need two things: the app on your phone, and the helper on the computer that 
 
 ## 1. Install the app
 
-**Android** (Android 10 or later):
-
-1. On the phone, download
-   [Relay-1.0.1.apk](https://github.com/netchuu/homebrew-tap/releases/download/android-1.0.1/Relay-1.0.1.apk)
-   (27 MB).
-2. Open it. Android asks you to allow installing apps from your browser or file manager ("Install unknown
-   apps"); allow it once, then tap Install.
-3. Optional, to check the download, compare its SHA-256 with the one on the
-   [release page](https://github.com/netchuu/homebrew-tap/releases/tag/android-1.0.1).
-
-**iPhone**: Relay for iOS is in App Store review and will be on the App Store soon.
+Relay for iPhone is in App Store review and will be on the App Store soon.
 
 ## 2. Install the helper on your computer
 
@@ -63,15 +53,14 @@ alone, and `relay uninstall` undoes it. To pair another phone later, run `relay 
   unrelated app called "relay", and a plain `brew upgrade relay` fails with "Cask 'relay' is not installed".
   `relay install` restarts the helper on the new version.
   With the curl installer, run the same command again.
-- **Android app:** download the new APK and install it over the old one; your pairing stays.
-- **Remove the helper:** `relay uninstall`, then `brew uninstall relay`. Your data stays in `~/.relay` until you
-  delete it.
+- **Remove the helper:** `relay uninstall`, then `brew uninstall relay`. Your pairings and data stay in
+  `~/.relay`; `relay uninstall --purge` deletes them too.
 
 ## Requirements and notes
 
 - macOS or Linux (x64 or arm64; WSL counts) and Claude Code 2.1.316 or later.
 - The macOS binaries are signed and notarized by Apple. The Linux ones are checked against `SHA256SUMS` by the
-  installer and by Homebrew. The Android app is signed with Relay's own key, so updates install over it.
+  installer and by Homebrew.
 - On Linux the helper runs as a systemd user service. On a server, run `sudo loginctl enable-linger $USER` so it
   keeps running after you log out; `relay install` reminds you. Without systemd it runs as a background process
   that you start again after a reboot with `relay restart`. Run Claude Code inside tmux so replies from the phone
