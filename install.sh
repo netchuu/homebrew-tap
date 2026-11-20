@@ -1,9 +1,5 @@
 #!/bin/sh
-# Installs the Relay helper on macOS or Linux without Homebrew:
-#   curl -fsSL https://raw.githubusercontent.com/netchuu/homebrew-tap/main/install.sh | sh
-# Downloads the release for this computer, checks it against SHA256SUMS, runs `relay install` (copies it to
-# ~/.relay/bin, adds the Claude Code hooks, starts it at login), then `relay pair`, which shows the QR code
-# to scan with the phone. One command from nothing to paired. No sudo needed.
+# Installs the Relay helper without Homebrew: downloads the release, checks SHA256SUMS, runs `relay install` and `relay pair`.
 set -eu
 
 REPO="netchuu/homebrew-tap"
@@ -16,8 +12,13 @@ case "$(uname -s)" in
   Darwin) OS=darwin ;;
   Linux)
     OS=linux
-    # Alpine and other musl systems need the musl build (and libstdc++, as Claude Code does).
-    if ls /lib/ld-musl-* >/dev/null 2>&1; then ARCH="$ARCH-musl"; fi
+    # Alpine and other musl systems need the musl build (and libstdc++, as Claude Code does). Ask the libc in
+    # use: /lib/ld-musl-* also exists on glibc systems that have the musl package installed.
+    if command -v ldd >/dev/null 2>&1; then
+      if ldd --version 2>&1 | grep -qi musl; then ARCH="$ARCH-musl"; fi
+    elif grep -qx 'ID=.\{0,1\}alpine.\{0,1\}' "${RELAY_OS_RELEASE:-/etc/os-release}" 2>/dev/null; then
+      ARCH="$ARCH-musl"
+    fi
     ;;
   *) echo "The Relay helper runs on macOS and Linux. On Windows, install it inside WSL." >&2; exit 1 ;;
 esac
@@ -44,10 +45,19 @@ ACTUAL="$(sha256 "$TMP/$NAME.tar.gz")"
 [ -n "$EXPECTED" ] && [ "$EXPECTED" = "$ACTUAL" ] || { echo "The download doesn't match its checksum, so it wasn't installed. Try again." >&2; exit 1; }
 
 tar -xzf "$TMP/$NAME.tar.gz" -C "$TMP"
-"$TMP/$NAME/relay" install
+# `relay install` exits non-zero when the helper doesn't answer in time. Keep going: link the command and
+# pair (which sets up again and waits for the helper). Pair's status is the final answer: it exits 0 when the
+# helper answered late, and non-zero only when the helper never started.
+INSTALL_STATUS=0
+"$TMP/$NAME/relay" install || INSTALL_STATUS=$?
 
 mkdir -p "$HOME/.local/bin"
 ln -sf "${RELAY_HOME:-$HOME/.relay}/bin/relay" "$HOME/.local/bin/relay"
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) echo "Add ~/.local/bin to your PATH to use the relay command." ;; esac
 # Finish with the pairing code, so one command takes a new user from nothing to scanning.
-"${RELAY_HOME:-$HOME/.relay}/bin/relay" pair
+if [ "$INSTALL_STATUS" -ne 0 ]; then
+  echo "The helper didn't start in time. If pairing below fails, run: relay doctor, then relay pair." >&2
+fi
+PAIR_STATUS=0
+"${RELAY_HOME:-$HOME/.relay}/bin/relay" pair || PAIR_STATUS=$?
+exit "$PAIR_STATUS"
